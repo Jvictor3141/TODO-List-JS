@@ -59,24 +59,24 @@
         <div class="text-input-form">
           <div>
             <label for="nome">Título:</label>
-            <input type="text" id="nome" name="nome">
+            <input type="text" id="nome" name="nome" required>
           </div>
 
           <div>
             <label for="descricao">Descrição:</label>
-            <textarea id="descricao" name="descricao" style="resize: none;"></textarea>
+            <textarea id="descricao" name="descricao" style="resize: none;" required></textarea>
           </div>
 
           <div>
             <label for="categoria">Categoria:</label>
-            <input type="text" id="categoria" name="categoria">
+            <input type="text" id="categoria" name="categoria" required>
           </div>
         </div>
 
         <div class="input-data-form">
           <div>
             <label for="data">Data:</label>
-            <input type="date" id="data" name="data">
+            <input type="date" id="data" name="data" required>
           </div>
 
           <div>
@@ -93,9 +93,9 @@
           <div>
             <label for="status">Status:</label>
             <select id="status" name="status">
-                <option value="a-fazer">A fazer</option>
-                <option value="em-andamento">Em andamento</option>
-                <option value="concluida">Concluída</option>
+                <option value="todo">A fazer</option>
+                <option value="doing">Em andamento</option>
+                <option value="done">Concluída</option>
             </select>
           </div>
         </div>
@@ -104,6 +104,6 @@
       </form>
     </div>
   </main>
-  <script src="./scripts/main.js"></script>
+  <script type="module" src="./scripts/main.js"></script>
 </body>
 </html>

@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    let taskTitle = document.getElementById("nome").value.trim();
+    let taskDescription = document.getElementById("descricao").value.trim();
   })
 
   overlay.addEventListener('click', (e) => {
