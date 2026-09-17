@@ -11,6 +11,7 @@
     <h1>TODO List</h1>
   </header>
   <main>
+    <!-- sessão de tarefas -->
     <section class="task-section">
       <div class="task-table-header">
         <h2>Lista de tarefas</h2>
@@ -23,12 +24,85 @@
           <li>Concluído</li>
         </ul>
         <ul class="task-list">
-          <li>teste</li>
-          <li>teste</li>
-          <li>teste</li>
+          <li id="todo-section">
+            <div class="task-card">
+              <button class="next-step-task"><img src="./icons/arrows.svg" alt="Icone de seta"></button>
+              <h2 class="task-title">Title task</h2>
+              <span class="task-date">12/09/2000</span>
+              <button class="delete-btn"><img src="./icons/trash-icon.svg" alt="Icone de lixeira"></button>
+            </div>
+          </li>
+          <li id="doing-section">
+            <div class="task-card">
+              <input type="checkbox" id="task-check">
+              <h2 class="task-title">Title task</h2>
+              <span class="task-date">12/09/2000</span>
+              <button class="delete-btn"><img src="./icons/trash-icon.svg" alt="Icone de lixeira"></button>
+            </div>
+          </li>
+          <li id="done-section">
+            <div class="task-card">
+              <div class="task-completed">
+                <img src="./icons/check-circle-icon.svg" alt="Icone de concluido">
+              </div>
+              <h2 class="task-title">Title task</h2>
+              <span class="task-date">12/09/2000</span>
+              <button class="delete-btn"><img src="./icons/trash-icon.svg" alt="Icone de lixeira"></button>
+            </div>
+          </li>
         </ul>
       </div>
     </section>
+
+    <div class="overlay active">
+      <form class="task-form">
+        <div class="text-input-form">
+          <div>
+            <label for="nome">Título:</label>
+            <input type="text" id="nome" name="nome">
+          </div>
+
+          <div>
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" style="resize: none;"></textarea>
+          </div>
+
+          <div>
+            <label for="categoria">Categoria:</label>
+            <input type="text" id="categoria" name="categoria">
+          </div>
+        </div>
+
+        <div class="input-data-form">
+          <div>
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data">
+          </div>
+
+          <div>
+            <label for="prioridade">Prioridade:</label>
+            <select id="prioridade" name="prioridade">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="a-fazer">A fazer</option>
+                <option value="em-andamento">Em andamento</option>
+                <option value="concluida">Concluída</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="create-task-btn" type="submit">Criar tarefa</button>
+      </form>
+    </div>
   </main>
   <script src="./scripts/main.js"></script>
 </body>
