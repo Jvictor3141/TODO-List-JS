@@ -24,11 +24,18 @@ export class TaskService {
   static validaCampos ({ nome, categoria, dataPrazo, prioridade, status }) {
     const erros = [];
 
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+    const dia = String(hoje.getDate()).padStart(2, "0");
+
+    const hojeString = `${ano}-${mes}-${dia}`
+
     if (!nome?.trim()) erros.push({ campo: "nome", msg: "Nome é obrigatório" });
 
     if (!categoria?.trim()) erros.push({ campo: "categoria", msg: "Categoria é obrigatória" });
 
-    if (isNaN(Date.parse(dataPrazo))) erros.push({ campo: "dataPrazo", msg: "Data inválida" });
+    if (isNaN(Date.parse(dataPrazo)) || dataPrazo < hojeString) erros.push({ campo: "dataPrazo", msg: "Data inválida" });
 
     if (!["1", "2", "3", "4", "5"].includes(prioridade)) erros.push({ campo: "prioridade", msg: "Prioridade inválida" });
 
@@ -41,8 +48,16 @@ export class TaskService {
     return repositorio.listarTarefas();
   }
 
-  deleteTask() {
-    
+  static deleteTask(hashId) {
+    let indexTask = this.listarTarefas().findIndex(tarefa => tarefa.id === hashId);
+
+    if(indexTask !== -1) {
+      this.listarTarefas().splice(indexTask, 1);
+    }
+  }
+
+  static buscarTask(id) {
+    return this.listarTarefas().buscarTaskId(id)
   }
 
 }

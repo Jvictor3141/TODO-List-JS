@@ -8,4 +8,8 @@ export class TaskRepository {
   listarTarefas() {
     return this.repositorio;
   }
+
+  buscarTaskId(id) {
+    return this.repositorio.find(tarefa => tarefa.id === id);
+  }
 }

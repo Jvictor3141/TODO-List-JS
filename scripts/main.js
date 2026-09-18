@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const form = document.getElementById("task-form");
 
+  renderizarTarefas(TaskService.listarTarefas());
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -20,8 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
     let taskPriority = document.getElementById("prioridade").value;
     let taskStatus = document.getElementById("status").value;
 
-    let tarefa = TaskService.createTask(taskTitle, taskDescription, taskCategory, taskDate, taskPriority, taskStatus)
-    addTaskColumn(tarefa);
+    try {
+      TaskService.createTask(taskTitle, taskDescription, taskCategory, taskDate, taskPriority, taskStatus);
+    } catch(err) {
+      alert(err);
+    }
+
+    renderizarTarefas(TaskService.listarTarefas());
 
     document.getElementById("nome").value = "";
     document.getElementById("descricao").value = "";
@@ -39,6 +46,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   })
 
+  const columnTodo = document.getElementById("todo-section");
+
+  columnTodo.addEventListener('click', (e) => {
+    const botao = event.target.closest('button');
+
+    if(!botao) return;
+    
+    let action = botao.dataset.action;
+    let idTask = botao.parentElement.dataset.id;
+
+    if(action === 'next-step') {
+      console.log(tarefa)
+    } else if(action === 'delete') {
+      TaskService.deleteTask(idTask);
+      renderizarTarefas(TaskService.listarTarefas());
+    }
+  })
+
 })
 
 function criarElementoStatus(tarefa) {
@@ -49,6 +74,7 @@ function criarElementoStatus(tarefa) {
     case "todo":
       el = document.createElement("button");
       el.classList.add("next-step-task")
+      el.dataset.action = "next-step"
       img = document.createElement("img");
       img.src = "../icons/arrows.svg";
       img.alt = "Icone da seta";
@@ -58,10 +84,12 @@ function criarElementoStatus(tarefa) {
       el = document.createElement("input");
       el.type = "checkbox";
       el.id = "task-check";
+      el.dataset.action = "checkbox"
       break;
     case "done":
       el = document.createElement("div");
-      el.classList.add("task-completed")
+      el.classList.add("task-completed");
+      el.dataset.action = "done"
       img = document.createElement("img");
       img.src = "../icons/check-circle-icon.svg";
       img.alt = "Icone da concluido";
@@ -89,6 +117,7 @@ function criaTaskCard(tarefa) {
 
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete-btn")
+  deleteBtn.dataset.action = "delete"
 
   const img = document.createElement("img");
   img.src = "../icons/trash-icon.svg";
@@ -104,23 +133,44 @@ function criaTaskCard(tarefa) {
   return div;
 }
 
-function addTaskColumn(tarefa) {
-  const todoSection = document.getElementById("todo-section")
-  const doingSection = document.getElementById("doing-section")
-  const doneSection = document.getElementById("done-section")
+// function addTaskColumn(tarefa) {
+//   const todoSection = document.getElementById("todo-section")
+//   const doingSection = document.getElementById("doing-section")
+//   const doneSection = document.getElementById("done-section")
 
 
-  switch (tarefa.status) {
-    case "todo":
-      todoSection.appendChild(criaTaskCard(tarefa));
-      break;
-    case "doing":
-      doingSection.appendChild(criaTaskCard(tarefa));
-      break;
-    case "done":
-      doneSection.appendChild(criaTaskCard(tarefa));
-      break;
-    default:
-      console.warn(`Erro ao adicionar tarefa na lista"`);
-  }
+//   switch (tarefa.status) {
+//     case "todo":
+//       todoSection.appendChild(criaTaskCard(tarefa));
+//       break;
+//     case "doing":
+//       doingSection.appendChild(criaTaskCard(tarefa));
+//       break;
+//     case "done":
+//       doneSection.appendChild(criaTaskCard(tarefa));
+//       break;
+//     default:
+//       console.warn(`Erro ao adicionar tarefa na lista"`);
+//   }
+// }
+
+function renderizarTarefas(repositorio) {
+  const secoes = {
+    todo: document.getElementById("todo-section"),
+    doing: document.getElementById("doing-section"),
+    done: document.getElementById("done-section"),
+  };
+
+
+  Object.values(secoes).forEach(el => el.innerHTML = "");
+
+  repositorio.forEach(tarefa => {
+    const card = criaTaskCard(tarefa);
+    const secao = secoes[tarefa.status];
+    if (!secao) {
+      console.warn(`Status "${tarefa.status}" não corresponde a nenhuma seção`);
+      return;
+    }
+    secao.appendChild(card);
+  });
 }
