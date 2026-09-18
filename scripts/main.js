@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const columnTodo = document.getElementById("todo-section");
   const overlayConfirmModal = document.getElementById("overlay-confirm")
   const confirmModal = document.getElementById("confirm-modal")
+  let idTask = null;
 
   columnTodo.addEventListener('click', (e) => {
     const botao = e.target.closest('button');
@@ -56,30 +57,32 @@ document.addEventListener('DOMContentLoaded', function() {
     if(!botao) return;
     
     let action = botao.dataset.action;
-    let idTask = botao.parentElement.dataset.id;
+    idTask = botao.parentElement.dataset.id;
 
     if(action === 'next-step') {
-      console.log(tarefa)
+      console.log("ainda a ser implementado")
     } else if(action === 'delete') {
       overlayConfirmModal.classList.toggle('active');
-      confirmModal.addEventListener('click', (e) => {
-        const botaoModal = e.target.closest('button');
-        if(!botao) return;
-        
-        let modalAction = botaoModal.dataset.modalaction;
-    
-        if(modalAction === 'confirm') {
-
-          TaskService.deleteTask(idTask);
-          overlayConfirmModal.classList.toggle('active');
-          renderizarTarefas(TaskService.listarTarefas());
-
-        } else if(modalAction === 'cancel')
-
-        overlayConfirmModal.classList.toggle('active');
-
-      })
+      
     }
+  })
+
+  confirmModal.addEventListener('click', (e) => {
+    const botaoModal = e.target.closest('button');
+    if(!botaoModal) return;
+    
+    let modalAction = botaoModal.dataset.modalaction;
+
+    if(modalAction === 'confirm') {
+
+      TaskService.deleteTask(idTask);
+      overlayConfirmModal.classList.toggle('active');
+      renderizarTarefas(TaskService.listarTarefas());
+
+    } else if(modalAction === 'cancel')
+
+    overlayConfirmModal.classList.toggle('active');
+
   })
 })
 
