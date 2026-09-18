@@ -41,4 +41,8 @@ export class TaskService {
     return repositorio.listarTarefas();
   }
 
+  deleteTask() {
+    
+  }
+
 }
