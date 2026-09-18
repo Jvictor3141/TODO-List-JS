@@ -86,6 +86,69 @@
         <button class="create-task-btn" type="submit">Salvar</button>
       </form>
     </div>
+
+    <div id="overlay-edit" class="overlay-edit">
+      <form id="task-form" class="task-form">
+        <div class="text-input-form">
+          <div>
+            <label for="nome">Título:</label>
+            <input type="text" id="nome" name="nome" required>
+          </div>
+
+          <div>
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" style="resize: none;" required></textarea>
+          </div>
+
+          <div>
+            <label for="categoria">Categoria:</label>
+            <input type="text" id="categoria" name="categoria" required>
+          </div>
+        </div>
+
+        <div class="input-data-form">
+          <div>
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required>
+          </div>
+
+          <div>
+            <label for="prioridade">Prioridade:</label>
+            <select id="prioridade" name="prioridade">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="todo">A fazer</option>
+                <option value="doing">Em andamento</option>
+                <option value="done">Concluída</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="create-task-btn" type="submit">Salvar</button>
+      </form>
+    </div>
+
+    <div id="overlay-confirm" class="overlay-confirm">
+      <div id="confirm-modal" class="confirm-modal">
+        <div class="warning">
+          <h2>Tem certeza que deseja apagar essa tarefa?</h2>
+          <img src="./icons/alert-circle.svg" alt="icone de alerta">
+        </div>
+        <div class="modal-btn">
+          <button class="confirm-btn-modal" data-modalaction="confirm">Confirmar</button>
+          <button class="cancel-btn-modal" data-modalaction="cancel">Cancelar</button>
+        </div>
+      </div>
+    </div>
   </main>
   <script type="module" src="./scripts/main.js"></script>
 </body>

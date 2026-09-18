@@ -234,7 +234,9 @@ main {
   cursor: pointer;
 }
 
-.overlay {
+.overlay,
+.overlay-confirm,
+.overlay-edit {
   display: none;
   position: absolute;
   background-color: #0000005c;
@@ -250,7 +252,7 @@ main {
   display: flex;
 }
 
-.task-form {
+.task-form, .confirm-modal {
   width: 100%;
   max-width: 440px;
   background: var(--card);
@@ -307,7 +309,7 @@ input:focus, textarea:focus, select:focus {
   .input-data-form { grid-template-columns: 1fr; }
 }
 
-.create-task-btn {
+.create-task-btn, .modal-btn .confirm-btn-modal, .modal-btn .cancel-btn-modal {
   width: 100%;
   padding: 11px;
   font-weight: 700;
@@ -319,5 +321,31 @@ input:focus, textarea:focus, select:focus {
   cursor: pointer;
   transition: transform .08s ease, box-shadow .08s ease;
 }
-.create-task-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--stroke); }
-.create-task-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--stroke); }
+.create-task-btn:hover, .modal-btn .confirm-btn-modal:hover, .modal-btn .cancel-btn-modal:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--stroke); }
+.create-task-btn:active, .modal-btn .confirm-btn-modal:active, .modal-btn .cancel-btn-modal:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--stroke); }
+
+.confirm-modal .warning,
+.confirm-modal .modal-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.confirm-modal .warning h2 {
+  font-size: 1rem;
+}
+
+.confirm-modal .modal-btn {
+  margin-top: 25px;
+}
+
+.modal-btn .confirm-btn-modal {
+  background-color: rgb(185, 251, 120);
+}
+
+.modal-btn .cancel-btn-modal {
+  background-color: rgb(243, 112, 112);
+}
+
