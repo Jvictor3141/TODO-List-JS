@@ -93,7 +93,10 @@
         <div class="text-input-form">
           <div class="modal-description-title">
             <h2>Descrição da Tarefa</h2>
-            <div><img src="./icons/edit.svg" alt="icone de editar"></div>
+            <div id="edit-div">
+              <img src="./icons/x.svg" alt="icone de fechar" id="close" class="close">
+              <img src="./icons/edit.svg" alt="icone de editar" id="edit-mode" class="active">
+            </div>
           </div>
           <div>
             <label for="nome">Título:</label>
@@ -138,7 +141,7 @@
           </div>
         </div>
 
-        <button class="create-task-btn" type="submit">Salvar</button>
+        <button id="save-btn" class="save-btn" type="submit">Salvar</button>
       </form>
     </div>
 

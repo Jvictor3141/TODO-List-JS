@@ -128,6 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const descriptionModal = document.getElementById("task-description");
   const overlayEdit = document.getElementById("overlay-edit");
   const taskList = document.getElementById("task-list");
+  const editDiv = document.getElementById("edit-div");
+  const iconEdit = document.getElementById("edit-mode");
+  const iconClose = document.getElementById("close");
 
   // campos do modal
 
@@ -137,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const dataEdit = document.getElementById("data-edit");
   const prioridadeEdit = document.getElementById("prioridade-edit");
   const statusEdit = document.getElementById("status-edit");
+
+  const savebtn = document.getElementById("save-btn");
 
   let taskSelected = null;
 
@@ -163,9 +168,62 @@ document.addEventListener('DOMContentLoaded', function() {
     overlayEdit.classList.toggle('active');
   })
 
-  descriptionModal.addEventListener('submit', () => {
+  editDiv.addEventListener('click', (e) => {
+    const elementClicked = e.target.closest('#edit-mode') || e.target.closest('#close');
+    if(!elementClicked) return;
+
+    alterarEstados();
+  })
+
+  descriptionModal.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    taskSelected.nome = nomeEdit.value.trim();
+    taskSelected.descricao = descricaoEdit.value.trim();
+    taskSelected.categoria = categoriaEdit.value.trim();
+    taskSelected.dataPrazo = dataEdit.value;
+    taskSelected.prioridade = prioridadeEdit.value;
+    taskSelected.status = statusEdit.value;
+
+    overlayEdit.classList.toggle('active');
+    renderizarTarefas(TaskService.listarTarefas());
+    idTask = null;
+    taskSelected = null;
+
+    nomeEdit.value = "";
+    descricaoEdit.value = "";
+    categoriaEdit.value = "";
+    dataEdit.value = "";
+    prioridadeEdit.value = "1";
+    statusEdit.value = "todo";
+
+    alterarEstados();
 
   })
+
+  function alterarEstados() {
+
+    iconEdit.classList.toggle('active');
+    iconClose.classList.toggle('active');
+
+    if(iconClose.classList.contains('active')) {
+      nomeEdit.readOnly = false;
+      descricaoEdit.readOnly = false;
+      categoriaEdit.readOnly = false;
+      dataEdit.readOnly = false;
+      prioridadeEdit.classList.remove('readonly');
+      statusEdit.classList.remove('readonly');
+      savebtn.classList.toggle('active-save');
+    } else {
+      nomeEdit.readOnly = true;
+      descricaoEdit.readOnly = true;
+      categoriaEdit.readOnly = true;
+      dataEdit.readOnly = true;
+      prioridadeEdit.classList.add('readonly');
+      statusEdit.classList.add('readonly');
+      savebtn.classList.toggle('active-save');
+    }
+  }
 })
 
 function criarElementoStatus(tarefa) {

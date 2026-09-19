@@ -267,6 +267,8 @@ main {
   padding: 28px 26px 24px;
 }
 
+
+
 .modal-description-title {
   display: flex;
   padding: 8px 0;
@@ -274,7 +276,12 @@ main {
 }
 
 .modal-description-title img {
+  display: none;
   width: 100%;
+}
+
+.modal-description-title .active{
+  display: block;
 }
 
 .modal-description-title > div {
@@ -283,7 +290,7 @@ main {
 }
 
 .modal-description-title > div:hover {
-  background-color: #555;
+  background-color: #c2c0c0;
   cursor: pointer;
 }
 
@@ -338,7 +345,7 @@ select.readonly {
   pointer-events: none;
 }
 
-.create-task-btn, .modal-btn .confirm-btn-modal, .modal-btn .cancel-btn-modal {
+.create-task-btn, .modal-btn .confirm-btn-modal, .modal-btn .cancel-btn-modal, .save-btn {
   width: 100%;
   padding: 11px;
   font-weight: 700;
@@ -350,8 +357,16 @@ select.readonly {
   cursor: pointer;
   transition: transform .08s ease, box-shadow .08s ease;
 }
-.create-task-btn:hover, .modal-btn .confirm-btn-modal:hover, .modal-btn .cancel-btn-modal:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--stroke); }
-.create-task-btn:active, .modal-btn .confirm-btn-modal:active, .modal-btn .cancel-btn-modal:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--stroke); }
+.create-task-btn:hover, .modal-btn .confirm-btn-modal:hover, .modal-btn .cancel-btn-modal:hover, .save-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--stroke); }
+.create-task-btn:active, .modal-btn .confirm-btn-modal:active, .modal-btn .cancel-btn-modal:active, .save-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--stroke); }
+
+.save-btn {
+  display: none;
+}
+
+.save-btn.active-save {
+  display: block;
+}
 
 .confirm-modal .warning,
 .confirm-modal .modal-btn {
