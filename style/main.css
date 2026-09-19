@@ -252,7 +252,7 @@ main {
   display: flex;
 }
 
-.task-form, .confirm-modal {
+.task-form, .confirm-modal, .task-description {
   width: 100%;
   max-width: 440px;
   background: var(--card);
@@ -260,6 +260,12 @@ main {
   border-radius: 6px;
   box-shadow: 6px 6px 0 var(--stroke);
   padding: 28px 26px 24px;
+}
+
+.modal-description-title {
+  display: flex;
+  padding: 8px 0;
+  justify-content: space-between;
 }
 
 .text-input-form {
@@ -273,7 +279,7 @@ main {
   padding: 8px;
 }
 
-.task-form > div > div { margin-bottom: 16px; }
+.task-form > div > div, .task-description > div > div { margin-bottom: 16px; }
 
 label {
   display: block;
@@ -307,6 +313,10 @@ input:focus, textarea:focus, select:focus {
 }
 @media (max-width: 420px) {
   .input-data-form { grid-template-columns: 1fr; }
+}
+
+select.readonly {
+  pointer-events: none;
 }
 
 .create-task-btn, .modal-btn .confirm-btn-modal, .modal-btn .cancel-btn-modal {
