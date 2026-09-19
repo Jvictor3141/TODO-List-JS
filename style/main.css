@@ -77,7 +77,7 @@ main {
   font-size: 1.7rem;
 }
 
-.task-table-header > button {
+.add-task, .filter-task {
   width: 50px;
   height: 50px;
   font-size: 2rem;
@@ -86,8 +86,21 @@ main {
   background-color: rgb(140, 247, 247)
 }
 
-.task-table-header > button:hover {
+.add-task:hover{
   background-color: rgb(110, 196, 196);
+  cursor: pointer;
+}
+
+.filter-task{
+  background-color: #FAFAF8;
+  border: 1px solid #c2c0c0;
+  transition: 0.5s;
+}
+
+.filter-task:hover {
+  border: none;
+  transition: 0.5s;
+  background-color: #c2c0c0;
   cursor: pointer;
 }
 
