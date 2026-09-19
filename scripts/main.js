@@ -63,8 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     idTask = botao.parentElement.dataset.id;
 
     if(action === 'next-step') {
-      let tarefaStep = TaskService.buscarTask(idTask);
-      tarefaStep.status = "doing";
+      TaskService.attTask(idTask, { status: "doing" });
       renderizarTarefas(TaskService.listarTarefas());
       idTask = null;
     } else if(action === 'delete') {
@@ -78,8 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if(checkbox && checkbox.checked) {
       idTask = checkbox.parentElement.dataset.id;
-      let tarefaStep = TaskService.buscarTask(idTask);
-      tarefaStep.status = "done";
+      TaskService.attTask(idTask, { status: "done" })
       renderizarTarefas(TaskService.listarTarefas());
       idTask = null;
     }
@@ -187,18 +185,27 @@ document.addEventListener('DOMContentLoaded', function() {
     let prioridadeVal = prioridadeEdit.value;
     let statusVal = statusEdit.value;
 
-    const { valido, erros } = TaskService.validaCampos({nomeVal, descricaoVal, categoriaVal, dataPrazoVal, prioridadeVal, statusVal});
+    let { valido, erros } = TaskService.validaCampos({
+      nome: nomeVal,
+      categoria: categoriaVal,
+      dataPrazo: dataPrazoVal,
+      prioridade: prioridadeVal,
+      status: statusVal
+    });
 
     if (!valido) {
-      alert(`Não foi possível salvar. Alguns campos estão errados, verifique e tente novamente.`);
+      alert("Erro ao salvar tarefa, por favor, verifique os campos e preencha corretamente");
+      return;
     }
 
-    taskSelected.nome = nomeEdit.value.trim();
-    taskSelected.descricao = descricaoEdit.value.trim();
-    taskSelected.categoria = categoriaEdit.value.trim();
-    taskSelected.dataPrazo = dataEdit.value;
-    taskSelected.prioridade = prioridadeEdit.value;
-    taskSelected.status = statusEdit.value;
+    TaskService.attTask(idTask, { 
+      nome: nomeVal,
+      descricao: descricaoVal,
+      categoria: categoriaVal,
+      dataPrazo: dataPrazoVal,
+      prioridade: prioridadeVal,
+      status: statusVal
+    })
 
     overlayEdit.classList.toggle('active');
     renderizarTarefas(TaskService.listarTarefas());
@@ -334,7 +341,6 @@ function renderizarTarefas(repositorio) {
     doing: document.getElementById("doing-section"),
     done: document.getElementById("done-section"),
   };
-
 
   Object.values(secoes).forEach(el => el.innerHTML = "");
 

@@ -49,11 +49,11 @@ export class TaskService {
   }
 
   static deleteTask(hashId) {
-    let indexTask = this.listarTarefas().findIndex(tarefa => tarefa.id === hashId);
+    return repositorio.delTask(hashId);
+  }
 
-    if(indexTask !== -1) {
-      this.listarTarefas().splice(indexTask, 1);
-    }
+  static attTask(id, dados) {
+    return repositorio.attTask(id, dados);
   }
 
   static buscarTask(id) {
