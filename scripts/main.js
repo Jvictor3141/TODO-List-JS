@@ -166,6 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if(e.target != e.currentTarget) return;
 
     overlayEdit.classList.toggle('active');
+
+    alterarEstados();
   })
 
   editDiv.addEventListener('click', (e) => {
@@ -177,6 +179,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
   descriptionModal.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    let nomeVal = nomeEdit.value.trim();
+    let descricaoVal = descricaoEdit.value.trim();
+    let categoriaVal = categoriaEdit.value.trim();
+    let dataPrazoVal = dataEdit.value;
+    let prioridadeVal = prioridadeEdit.value;
+    let statusVal = statusEdit.value;
+
+    const { valido, erros } = TaskService.validaCampos({nomeVal, descricaoVal, categoriaVal, dataPrazoVal, prioridadeVal, statusVal});
+
+    if (!valido) {
+      alert(`Não foi possível salvar. Alguns campos estão errados, verifique e tente novamente.`);
+    }
 
     taskSelected.nome = nomeEdit.value.trim();
     taskSelected.descricao = descricaoEdit.value.trim();
