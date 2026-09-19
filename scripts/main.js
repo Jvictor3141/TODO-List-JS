@@ -124,6 +124,48 @@ document.addEventListener('DOMContentLoaded', function() {
     overlayConfirmModal.classList.toggle('active');
     idTask = null;
   })
+
+  const descriptionModal = document.getElementById("task-description");
+  const overlayEdit = document.getElementById("overlay-edit");
+  const taskList = document.getElementById("task-list");
+
+  // campos do modal
+
+  const nomeEdit = document.getElementById("nome-edit");
+  const descricaoEdit = document.getElementById("descricao-edit");
+  const categoriaEdit = document.getElementById("categoria-edit");
+  const dataEdit = document.getElementById("data-edit");
+  const prioridadeEdit = document.getElementById("prioridade-edit");
+  const statusEdit = document.getElementById("status-edit");
+
+  let taskSelected = null;
+
+  taskList.addEventListener('click', (e) => {
+    const cardTitle =  e.target.closest('.task-title');
+    if(!cardTitle) return;
+    const card = cardTitle.parentElement;
+
+    overlayEdit.classList.toggle('active');
+
+    taskSelected = TaskService.buscarTask(idTask = card.dataset.id);
+
+    nomeEdit.value = taskSelected.nome;
+    descricaoEdit.value = taskSelected.descricao;
+    categoriaEdit.value = taskSelected.categoria;
+    dataEdit.value = taskSelected.dataPrazo;
+    prioridadeEdit.value = taskSelected.prioridade;
+    statusEdit.value = taskSelected.status;
+  })
+
+  overlayEdit.addEventListener('click', (e) => {
+    if(e.target != e.currentTarget) return;
+
+    overlayEdit.classList.toggle('active');
+  })
+
+  descriptionModal.addEventListener('submit', () => {
+
+  })
 })
 
 function criarElementoStatus(tarefa) {
@@ -223,6 +265,7 @@ function renderizarTarefas(repositorio) {
 
   Object.values(secoes).forEach(el => el.innerHTML = "");
 
+  repositorio.sort((a, b) => a.prioridade - b.prioridade);
   repositorio.forEach(tarefa => {
     const card = criaTaskCard(tarefa);
     const secao = secoes[tarefa.status];
