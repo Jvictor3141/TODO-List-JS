@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log("ainda a ser implementado")
     } else if(action === 'delete') {
       overlayConfirmModal.classList.toggle('active');
-      
     }
   })
 
@@ -78,11 +77,11 @@ document.addEventListener('DOMContentLoaded', function() {
       TaskService.deleteTask(idTask);
       overlayConfirmModal.classList.toggle('active');
       renderizarTarefas(TaskService.listarTarefas());
+      idTask = null;
 
     } else if(modalAction === 'cancel')
-
     overlayConfirmModal.classList.toggle('active');
-
+    idTask = null;
   })
 })
 
