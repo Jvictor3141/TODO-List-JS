@@ -57,7 +57,7 @@ export class TaskService {
   }
 
   static buscarTask(id) {
-    return this.listarTarefas().buscarTaskId(id)
+    return repositorio.buscarTaskId(id)
   }
 
 }

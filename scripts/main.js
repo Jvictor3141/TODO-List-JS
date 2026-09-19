@@ -47,8 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 
   const columnTodo = document.getElementById("todo-section");
-  const overlayConfirmModal = document.getElementById("overlay-confirm")
-  const confirmModal = document.getElementById("confirm-modal")
+  const columnDoing = document.getElementById("doing-section");
+  const columnDone = document.getElementById("done-section");
+  const taskCheck = document.getElementById("task-check");
+  const overlayConfirmModal = document.getElementById("overlay-confirm");
+  const confirmModal = document.getElementById("confirm-modal");
   let idTask = null;
 
   columnTodo.addEventListener('click', (e) => {
@@ -60,8 +63,46 @@ document.addEventListener('DOMContentLoaded', function() {
     idTask = botao.parentElement.dataset.id;
 
     if(action === 'next-step') {
-      console.log("ainda a ser implementado")
+      let tarefaStep = TaskService.buscarTask(idTask);
+      tarefaStep.status = "doing";
+      renderizarTarefas(TaskService.listarTarefas());
+      idTask = null;
     } else if(action === 'delete') {
+      overlayConfirmModal.classList.toggle('active');
+    }
+  })
+
+  columnDoing.addEventListener('click', (e) => {
+    const botaoDel = e.target.closest('button');
+    const checkbox = e.target.closest('#task-check')
+    
+    if(checkbox && checkbox.checked) {
+      idTask = checkbox.parentElement.dataset.id;
+      let tarefaStep = TaskService.buscarTask(idTask);
+      tarefaStep.status = "done";
+      renderizarTarefas(TaskService.listarTarefas());
+      idTask = null;
+    }
+    
+    if(!botaoDel) return;
+    
+    let action = botaoDel.dataset.action;
+    idTask = botaoDel.parentElement.dataset.id;
+
+    if(action === 'delete') {
+    overlayConfirmModal.classList.toggle('active');
+    }
+  })
+
+  columnDone.addEventListener('click', (e) => {
+    const botao = e.target.closest('button');
+
+    if(!botao) return;
+    
+    let action = botao.dataset.action;
+    idTask = botao.parentElement.dataset.id;
+    
+    if(action === 'delete') {
       overlayConfirmModal.classList.toggle('active');
     }
   })
@@ -103,7 +144,6 @@ function criarElementoStatus(tarefa) {
       el = document.createElement("input");
       el.type = "checkbox";
       el.id = "task-check";
-      el.dataset.action = "checkbox"
       break;
     case "done":
       el = document.createElement("div");
