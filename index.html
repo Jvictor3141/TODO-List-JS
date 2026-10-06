@@ -16,6 +16,15 @@
       <div class="task-table-header">
         <h2>Lista de tarefas</h2>
         <div>
+          <label class="bulk-selection-control" for="select-all-tasks">
+            <input type="checkbox" id="select-all-tasks" aria-label="Selecionar tarefas">
+          </label>
+          <select id="bulk-task-status" class="bulk-task-status" aria-label="Alterar status das tarefas selecionadas">
+            <option value="">Alterar status...</option>
+            <option value="todo">A fazer</option>
+            <option value="doing">Em andamento</option>
+            <option value="done">Concluída</option>
+          </select>
           <!-- <button id="filter" class="filter-task"><img src="./icons/filter-icon.svg" alt="icone de filtro"></button> -->
           <button id="add-task" class="add-task">+</button>
         </div>

@@ -1,5 +1,7 @@
 import { TaskService } from "./service/TaskService.js";
 
+const selectedTaskIds = new Set();
+
 document.addEventListener('DOMContentLoaded', function() {
   const buttonOpenForm = document.getElementById('add-task');
   const overlay = document.getElementById('overlay');
@@ -29,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     renderizarTarefas(TaskService.listarTarefas());
+    atualizarSelecaoCabecalho();
 
     document.getElementById("nome").value = "";
     document.getElementById("descricao").value = "";
@@ -49,7 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const columnTodo = document.getElementById("todo-section");
   const columnDoing = document.getElementById("doing-section");
   const columnDone = document.getElementById("done-section");
-  const taskCheck = document.getElementById("task-check");
+  const taskSection = document.querySelector(".task-section");
+  const selectAllTasks = document.getElementById("select-all-tasks");
+  const bulkTaskStatus = document.getElementById("bulk-task-status");
   const overlayConfirmModal = document.getElementById("overlay-confirm");
   const confirmModal = document.getElementById("confirm-modal");
   let idTask = null;
@@ -73,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   columnDoing.addEventListener('click', (e) => {
     const botaoDel = e.target.closest('button');
-    const checkbox = e.target.closest('#task-check')
+    const checkbox = e.target.closest('[data-action="complete-task"]')
     
     if(checkbox && checkbox.checked) {
       idTask = checkbox.parentElement.dataset.id;
@@ -114,8 +119,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if(modalAction === 'confirm') {
 
       TaskService.deleteTask(idTask);
+      selectedTaskIds.delete(idTask);
       overlayConfirmModal.classList.toggle('active');
       renderizarTarefas(TaskService.listarTarefas());
+      atualizarSelecaoCabecalho();
       idTask = null;
 
     } else if(modalAction === 'cancel')
@@ -142,6 +149,41 @@ document.addEventListener('DOMContentLoaded', function() {
   const savebtn = document.getElementById("save-btn");
 
   let taskSelected = null;
+
+  selectAllTasks.addEventListener('change', () => {
+    taskSection.classList.toggle('selection-mode', selectAllTasks.checked);
+    selectedTaskIds.clear();
+    if (selectAllTasks.checked) {
+      TaskService.listarTarefas().forEach(tarefa => selectedTaskIds.add(tarefa.id));
+    }
+    renderizarTarefas(TaskService.listarTarefas());
+  });
+
+  taskList.addEventListener('change', (e) => {
+    const checkbox = e.target.closest('.task-selection-checkbox');
+    if (!checkbox) return;
+
+    const id = checkbox.closest('.task-card').dataset.id;
+    if (checkbox.checked) selectedTaskIds.add(id);
+    else selectedTaskIds.delete(id);
+    atualizarSelecaoCabecalho();
+  });
+
+  bulkTaskStatus.addEventListener('change', () => {
+    const status = bulkTaskStatus.value;
+    if (!status || selectedTaskIds.size === 0) return;
+
+    selectedTaskIds.forEach(id => TaskService.attTask(id, { status }));
+    bulkTaskStatus.value = "";
+    renderizarTarefas(TaskService.listarTarefas());
+    atualizarSelecaoCabecalho();
+  });
+
+  function atualizarSelecaoCabecalho() {
+    const total = TaskService.listarTarefas().length;
+    selectAllTasks.checked = total > 0 && selectedTaskIds.size === total;
+    selectAllTasks.indeterminate = selectedTaskIds.size > 0 && selectedTaskIds.size < total;
+  }
 
   taskList.addEventListener('click', (e) => {
     const cardTitle =  e.target.closest('.task-title');
@@ -265,7 +307,8 @@ function criarElementoStatus(tarefa) {
     case "doing":
       el = document.createElement("input");
       el.type = "checkbox";
-      el.id = "task-check";
+      el.dataset.action = "complete-task";
+      el.setAttribute("aria-label", "Concluir tarefa");
       break;
     case "done":
       el = document.createElement("div");
@@ -292,6 +335,12 @@ function criaTaskCard(tarefa) {
   title.classList.add("task-title");
   title.textContent = tarefa.nome;
 
+  const selectionCheckbox = document.createElement("input");
+  selectionCheckbox.type = "checkbox";
+  selectionCheckbox.classList.add("task-selection-checkbox");
+  selectionCheckbox.checked = selectedTaskIds.has(tarefa.id);
+  selectionCheckbox.setAttribute("aria-label", `Selecionar tarefa ${tarefa.nome}`);
+
   const date = document.createElement("span");
   date.classList.add("task-date");
   date.textContent = tarefa.dataPrazo;
@@ -306,6 +355,7 @@ function criaTaskCard(tarefa) {
 
   deleteBtn.appendChild(img);
 
+  div.appendChild(selectionCheckbox);
   div.appendChild(criarElementoStatus(tarefa))
   div.appendChild(title)
   div.appendChild(date)
